@@ -25,6 +25,7 @@ export class AudiencePicker extends React.PureComponent {
     hallsOfResidence: PropTypes.object,
     locationOpts: PropTypes.object,
     audienceDidUpdate: PropTypes.func.isRequired,
+    itemName: PropTypes.string,
   };
 
   static defaultProps = {
@@ -34,6 +35,7 @@ export class AudiencePicker extends React.PureComponent {
     deptSubsetOpts: {},
     locationOpts: {},
     hallsOfResidence: {},
+    itemName: 'alert',
   };
 
   constructor(props) {
@@ -142,42 +144,48 @@ export class AudiencePicker extends React.PureComponent {
   }
 
   locationInput() {
+    const { itemName } = this.props;
+    const hint = `You can optionally select one or more locations to target recipients for this ${itemName}`;
     return (
-      <div className="list-group">
-        <label className="control-label">
-          Is this alert specific to where people live?&nbsp;
-          <i
-            className="fal fa-info-circle"
-            data-toggle="tooltip"
-            data-placement="left"
-            title="Users can select one or more locations to receive
-             alerts, or may choose not to specify any"
+      <div className="panel panel-default">
+        <div className="panel-heading">
+          <h3 className="panel-title">Location</h3>
+        </div>
+        <div className="panel-body">
+          <label className="control-label">
+            Is this {itemName} specific to where people live?&nbsp;
+            <i
+              className="fal fa-info-circle"
+              data-toggle="tooltip"
+              data-placement="left"
+              title={hint}
+            />
+          </label>
+          <RadioButton
+            handleChange={this.handleChange}
+            isChecked={!this.isChecked('locations.yesLocation')}
+            label="No"
+            value="noLocation"
+            formPath="locations"
           />
-        </label>
-        <RadioButton
-          handleChange={this.handleChange}
-          isChecked={!this.isChecked('locations.yesLocation')}
-          label="No"
-          value="noLocation"
-          formPath="locations"
-        />
-        <RadioButton
-          handleChange={this.handleChange}
-          isChecked={this.isChecked('locations.yesLocation')}
-          label="Yes"
-          value="yesLocation"
-          formPath="locations"
-        >
-          {Object.keys(this.props.locationOpts).map(key => (<Checkbox
-              key={key}
-              handleChange={(name, type, path) => this.handleChange(key, type, path)}
-              formPath="locations.yesLocation"
-              label={this.props.locationOpts[key]}
-              name="audience.audience[]"
-              value={`OptIn:Location:${key}`}
-              isChecked={this.isChecked(`locations.yesLocation.${key}`)}
-            />))}
-        </RadioButton>
+          <RadioButton
+            handleChange={this.handleChange}
+            isChecked={this.isChecked('locations.yesLocation')}
+            label="Yes"
+            value="yesLocation"
+            formPath="locations"
+          >
+            {Object.keys(this.props.locationOpts).map(key => (<Checkbox
+                key={key}
+                handleChange={(name, type, path) => this.handleChange(key, type, path)}
+                formPath="locations.yesLocation"
+                label={this.props.locationOpts[key]}
+                name="audience.audience[]"
+                value={`OptIn:Location:${key}`}
+                isChecked={this.isChecked(`locations.yesLocation.${key}`)}
+              />))}
+          </RadioButton>
+        </div>
       </div>
     );
   }
@@ -325,6 +333,22 @@ export class AudiencePicker extends React.PureComponent {
             />
             <Checkbox
               handleChange={this.handleChange}
+              isChecked={this.isChecked(prefixPath(`.groups.undergraduates.year.${prefixDeptSubset('UndergradStudents:Third')}`))}
+              label="Third year"
+              name="audience.audience[]"
+              value={prefixDeptSubset('UndergradStudents:Third')}
+              formPath={prefixPath('.groups.undergraduates.year')}
+            />
+            <Checkbox
+              handleChange={this.handleChange}
+              isChecked={this.isChecked(prefixPath(`.groups.undergraduates.year.${prefixDeptSubset('UndergradStudents:Fourth')}`))}
+              label="Fourth year"
+              name="audience.audience[]"
+              value={prefixDeptSubset('UndergradStudents:Fourth')}
+              formPath={prefixPath('.groups.undergraduates.year')}
+            />
+            <Checkbox
+              handleChange={this.handleChange}
               isChecked={this.isChecked(prefixPath(`.groups.undergraduates.year.${prefixDeptSubset('UndergradStudents:Final')}`))}
               label="Final year"
               name="audience.audience[]"
@@ -422,43 +446,48 @@ export class AudiencePicker extends React.PureComponent {
   }
 
   render() {
+    const { itemName } = this.props;
     return (
       <div>
-        <div className="list-group">
-          <label className="control-label">Who is this alert for?</label>
+        <div className="panel panel-default">
+          <div className="panel-heading">
+            <h3 className="panel-title">Audience</h3>
+          </div>
+          <div className="panel-body">
+            <label className="control-label">Who is this {itemName} for?</label>
 
-          {this.props.isGod
-            ? <div>
-              <RadioButton
-                handleChange={this.handleChange}
-                isChecked={this.isChecked('audience.universityWide')}
-                label="People across the whole university"
-                value="universityWide"
-                formPath="audience"
-              >
-                {this.groupsInput()}
-              </RadioButton>
+            {this.props.isGod
+              ? <div>
+                <RadioButton
+                  handleChange={this.handleChange}
+                  isChecked={this.isChecked('audience.universityWide')}
+                  label="People across the whole university"
+                  value="universityWide"
+                  formPath="audience"
+                >
+                  {this.groupsInput()}
+                </RadioButton>
 
-              <RadioButton
-                handleChange={this.handleChange}
-                isChecked={this.isChecked('audience.department')}
-                onDeselect={this.clearDepartment}
-                label="People within a particular department"
-                value="department"
-                formPath="audience"
-              >
-                {this.groupsInput()}
-              </RadioButton>
-            </div>
-            : this.groupsInput()
-          }
+                <RadioButton
+                  handleChange={this.handleChange}
+                  isChecked={this.isChecked('audience.department')}
+                  onDeselect={this.clearDepartment}
+                  label="People within a particular department"
+                  value="department"
+                  formPath="audience"
+                >
+                  {this.groupsInput()}
+                </RadioButton>
+              </div>
+              : this.groupsInput()
+            }
+          </div>
         </div>
         {this.locationInput()}
       </div>
     );
   }
 }
-
 
 function mapDispatchToProps(dispatch) {
   return ({
