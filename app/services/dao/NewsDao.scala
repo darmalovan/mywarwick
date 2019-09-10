@@ -108,7 +108,7 @@ class AnormNewsDao @Inject()(dialect: DatabaseDialect) extends NewsDao {
       SELECT
         n.*,
         NEWS_CATEGORY.ID AS NEWS_CATEGORY_ID,
-        NEWS_CATEGORY.NAME AS NEWS_CATEGORY_NAME
+        NEWS_CATEGORY.NAME AS NEWS_CATEGORY_NAME,
         NEWS_CATEGORY.ICON AS NEWS_CATEGORY_ICON
       FROM NEWS_ITEM n
         LEFT OUTER JOIN NEWS_ITEM_CATEGORY c
@@ -215,7 +215,8 @@ class AnormNewsDao @Inject()(dialect: DatabaseDialect) extends NewsDao {
       SELECT
         n.*,
         NEWS_CATEGORY.ID AS NEWS_CATEGORY_ID,
-        NEWS_CATEGORY.NAME AS NEWS_CATEGORY_NAME
+        NEWS_CATEGORY.NAME AS NEWS_CATEGORY_NAME,
+        NEWS_CATEGORY.ICON AS NEWS_CATEGORY_ICON
       FROM NEWS_ITEM n
         LEFT OUTER JOIN NEWS_ITEM_CATEGORY c
           ON c.NEWS_ITEM_ID = n.ID
