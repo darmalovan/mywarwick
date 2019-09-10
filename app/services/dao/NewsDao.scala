@@ -86,7 +86,7 @@ class AnormNewsDao @Inject()(dialect: DatabaseDialect) extends NewsDao {
     publisherId <- str("publisher_id")
   } yield {
     val link = for (text <- linkText; href <- parseLink(linkHref)) yield Link(text, href)
-    val category = for (id <- newsCategoryId; name <- newsCategoryName; icon <- newsCategoryIcon) yield NewsCategory(id, name, Some(icon))
+    val category = for (id <- newsCategoryId; name <- newsCategoryName) yield NewsCategory(id, name, newsCategoryIcon)
 
     NewsItemRender(id, title, text, link, publishDate, imageId, category.toSeq, ignoreCategories, publisherId)
   }

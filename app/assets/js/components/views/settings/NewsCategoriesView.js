@@ -78,7 +78,7 @@ class NewsCategoriesView extends HideableView {
           { _.map(this.props.categories, category => (<SwitchListGroupItem
               key={ category.id }
               id={ `category-${category.id}` }
-              icon="newspaper-o"
+              icon={'icon' in category ? category.icon : ''}
               description={ category.name }
               value={ category.id }
               onClick={ this.onClick }
