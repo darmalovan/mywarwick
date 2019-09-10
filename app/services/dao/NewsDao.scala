@@ -82,10 +82,11 @@ class AnormNewsDao @Inject()(dialect: DatabaseDialect) extends NewsDao {
     ignoreCategories <- bool("ignore_categories")
     newsCategoryId <- str("news_category_id").?
     newsCategoryName <- str("news_category_name").?
+    newsCategoryIcon <- str("news_category_icon").?
     publisherId <- str("publisher_id")
   } yield {
     val link = for (text <- linkText; href <- parseLink(linkHref)) yield Link(text, href)
-    val category = for (id <- newsCategoryId; name <- newsCategoryName) yield NewsCategory(id, name)
+    val category = for (id <- newsCategoryId; name <- newsCategoryName) yield NewsCategory(id, name, newsCategoryIcon)
 
     NewsItemRender(id, title, text, link, publishDate, imageId, category.toSeq, ignoreCategories, publisherId)
   }
@@ -107,7 +108,8 @@ class AnormNewsDao @Inject()(dialect: DatabaseDialect) extends NewsDao {
       SELECT
         n.*,
         NEWS_CATEGORY.ID AS NEWS_CATEGORY_ID,
-        NEWS_CATEGORY.NAME AS NEWS_CATEGORY_NAME
+        NEWS_CATEGORY.NAME AS NEWS_CATEGORY_NAME,
+        NEWS_CATEGORY.ICON AS NEWS_CATEGORY_ICON
       FROM NEWS_ITEM n
         LEFT OUTER JOIN NEWS_ITEM_CATEGORY c
           ON c.NEWS_ITEM_ID = n.ID
@@ -213,7 +215,8 @@ class AnormNewsDao @Inject()(dialect: DatabaseDialect) extends NewsDao {
       SELECT
         n.*,
         NEWS_CATEGORY.ID AS NEWS_CATEGORY_ID,
-        NEWS_CATEGORY.NAME AS NEWS_CATEGORY_NAME
+        NEWS_CATEGORY.NAME AS NEWS_CATEGORY_NAME,
+        NEWS_CATEGORY.ICON AS NEWS_CATEGORY_ICON
       FROM NEWS_ITEM n
         LEFT OUTER JOIN NEWS_ITEM_CATEGORY c
           ON c.NEWS_ITEM_ID = n.ID
