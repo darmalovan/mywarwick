@@ -62,12 +62,12 @@ class NewsItem extends React.PureComponent {
 
           <div className="news-item__footer">
             <div className="news-item__link">{ moreLink }</div>
-            <div className="news-item__category-tags">
-              {categories.map(c => <NewsItemTag key={c.id} name={c.name} />)}
-            </div>
             <p>
               {dateFormats.forNewsItem(publishDate)}
             </p>
+            <div className="news-item__category-tags">
+              {categories.map(c => <NewsItemTag key={c.id} name={c.name} />)}
+            </div>
           </div>
         </div>
       </article>

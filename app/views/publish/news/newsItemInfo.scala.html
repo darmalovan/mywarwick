@@ -29,12 +29,6 @@
         }
         </div>
 
-        <div class="news-item__category-tags">
-          @item.categories.map { category =>
-            <span class="badge">@category.name</span>
-          }
-        </div>
-
         Published @models.DateFormats.emailDateTime(item.publishDate),
         @item.updated.map { updated =>
           updated by
@@ -62,6 +56,12 @@
           }
           case _ => {}
         }
+
+        <div class="news-item__category-tags">
+        @item.categories.map { category =>
+          <span class="badge">@category.name</span>
+        }
+        </div>
       </div>
     </div>
   </div>
