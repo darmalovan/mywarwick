@@ -54,7 +54,7 @@ class NewsControllerTest extends BaseSpec with MockitoSugar with Results with Mi
 
   when(departmentInfoService.allDepartments).thenReturn(Seq(DepartmentInfo("IN", "IT Services", "IT Services", "ITS", "SERVICE", "X")))
   when(departmentInfoService.allPublishableDepartments).thenReturn(Seq(DepartmentInfo("IN", "IT Services", "IT Services", "ITS", "SERVICE", "X")))
-  when(newsCategoryService.all()).thenReturn(Seq(NewsCategory("abc", "Campus")))
+  when(newsCategoryService.all()).thenReturn(Seq(NewsCategory("abc", "Campus", None)))
 
   private val mockCsrfHelper = mock[CSRFPageHelper]
   private val mockCsrfPageHelperFactory = mock[CSRFPageHelperFactory]
@@ -272,7 +272,7 @@ class NewsControllerTest extends BaseSpec with MockitoSugar with Results with Mi
       when(audienceService.resolveUsersForComponentsGrouped(audience.components)).thenReturn(Success(Seq((Audience.DepartmentAudience("IN", Seq(Staff)), Set("a", "b", "c").map(Usercode)))))
       when(userPreferencesService.countInitialisedUsers(Set("a", "b", "c").map(Usercode))).thenReturn(2)
       when(userNewsCategoryService.getRecipientsOfNewsInCategories(Seq("abc"))).thenReturn(Set("a", "e").map(Usercode))
-      when(newsCategoryService.getNewsCategoryForCatId("abc")).thenReturn(NewsCategory("abc", "Campus"))
+      when(newsCategoryService.getNewsCategoryForCatId("abc")).thenReturn(NewsCategory("abc", "Campus", None))
 
       val result = call(newsController.audienceInfo("xyz"), FakeRequest("POST", "/").withFormUrlEncodedBody(validData: _*))
 
