@@ -21,6 +21,7 @@ const initialState = {
   },
   features: {
     updateTileEditUI: true,
+    news: true,
   },
 };
 
