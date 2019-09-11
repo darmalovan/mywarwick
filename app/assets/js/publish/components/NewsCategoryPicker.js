@@ -15,7 +15,7 @@ export class NewsCategoryPicker extends React.PureComponent {
       chosenCategories: PropTypes.arrayOf(PropTypes.string),
       ignoreCategories: PropTypes.bool,
     }),
-    audienceDidUpdate: PropTypes.func.isRequired,
+    updateAudience: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -32,27 +32,34 @@ export class NewsCategoryPicker extends React.PureComponent {
     };
     this.handleCategoriesChange = this.handleCategoriesChange.bind(this);
     this.handleIgnore = this.handleIgnore.bind(this);
-    this.updateAudienceIndicator = this.updateAudienceIndicator.bind(this);
+
+    this.props.updateAudience(
+      formData.ignoreCategories || formData.chosenCategories.length > 0,
+    );
   }
 
-  updateAudienceIndicator() {
-    this.props.audienceDidUpdate();
-  }
 
   handleCategoriesChange(value) {
+    const chosenCategories = _.includes(this.state.chosenCategories, value)
+      ? _.remove(this.state.chosenCategories.slice(), id => id !== value)
+      : this.state.chosenCategories.slice().concat([value]);
+
+    this.props.updateAudience(
+      this.state.ignoreCategories || chosenCategories.length > 0,
+    );
     this.setState({
-      chosenCategories: _.includes(this.state.chosenCategories, value)
-        ? _.remove(this.state.chosenCategories.slice(), id => id !== value)
-        : this.state.chosenCategories.slice().concat([value]),
+      chosenCategories,
     });
-    this.updateAudienceIndicator();
   }
 
   handleIgnore() {
+    const ignoreCategories = !this.state.ignoreCategories;
+    this.props.updateAudience(
+      ignoreCategories || this.state.chosenCategories.length > 0,
+    );
     this.setState({
-      ignoreCategories: !this.state.ignoreCategories,
+      ignoreCategories,
     });
-    this.updateAudienceIndicator();
   }
 
   makeOptions() {
@@ -73,14 +80,18 @@ export class NewsCategoryPicker extends React.PureComponent {
 
   render() {
     return (
-      <div>
-        <div className="list-group">
+      <div className="panel panel-default">
+        <div className="panel-heading">
+          <h3 className="panel-title">Category tagging</h3>
+        </div>
+        <div className="panel-body">
           <label className="control-label">
             What should this news item be tagged with?
           </label>
           {this.makeOptions()}
-        </div>
-        <div className="list-group">
+
+          <hr className="tight" />
+
           <Checkbox
             handleChange={this.handleIgnore}
             name="item.ignoreCategories"
@@ -89,7 +100,7 @@ export class NewsCategoryPicker extends React.PureComponent {
             value={this.state.ignoreCategories.toString()}
             formPath=""
           />
-          <span className="help-block">Use sparingly!</span>
+          <p className="small text-muted">Use sparingly!</p>
         </div>
       </div>
     );
@@ -98,8 +109,9 @@ export class NewsCategoryPicker extends React.PureComponent {
 
 function mapDispatchToProps(dispatch) {
   return ({
-    audienceDidUpdate: () => dispatch({
+    updateAudience: canEstimateAudience => dispatch({
       type: 'AUDIENCE_UPDATE',
+      canEstimateAudience,
     }),
   });
 }

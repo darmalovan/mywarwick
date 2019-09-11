@@ -78,7 +78,9 @@ describe('AudiencePicker', () => {
     };
     const shallow = enzyme.shallow(<AudiencePicker {...props}/>);
 
-    const radioButtons = shallow.children({ className: 'list-group' }).first().children().at(1);
+    const radioButtons = shallow.find('.panel-body').first().children().at(1);
+
+    console.log(radioButtons.html());
 
     expect(shallow.children().length).to.eql(2);
     expect(radioButtons.children().first().prop('label')).to.eql('People across the whole university');
@@ -220,12 +222,12 @@ describe('AudiencePicker', () => {
 
     const shallow = enzyme.shallow(<AudiencePicker {...props} />,  { context });
 
-    expect(shallow.find('.list-group').at(1).find(RadioButton).first().prop('isChecked')).to.eql(true);
-    expect(shallow.find('.list-group').at(1).find(RadioButton).at(1).prop('isChecked')).to.eql(false);
+    expect(shallow.find('.panel-body').at(1).find(RadioButton).first().prop('isChecked')).to.eql(true);
+    expect(shallow.find('.panel-body').at(1).find(RadioButton).at(1).prop('isChecked')).to.eql(false);
 
     shallow.setState(newState);
-    expect(shallow.find('.list-group').at(1).find(RadioButton).first().prop('isChecked')).to.eql(false);
-    expect(shallow.find('.list-group').at(1).find(RadioButton).at(1).prop('isChecked')).to.eql(true);
+    expect(shallow.find('.panel-body').at(1).find(RadioButton).first().prop('isChecked')).to.eql(false);
+    expect(shallow.find('.panel-body').at(1).find(RadioButton).at(1).prop('isChecked')).to.eql(true);
   });
 
   it('only displays \'listofUsercodes\' group for non-teaching departments', () => {
@@ -243,14 +245,14 @@ describe('AudiencePicker', () => {
 
     const mounted = enzyme.mount(<AudiencePicker {...props} />,  { context });
 
-    expect(mounted.find('.list-group').first().find(RadioButton).length).to.eql(2);
-    expect(mounted.find('.list-group').first().find(RadioButton).at(1).props().label).to.contain('Groups in Agriculture Department');
-    expect(mounted.find('.list-group').first().find(RadioButton).at(1).find(Checkbox).props().label).to.contain('A list of people I\'ll type or paste in');
+    expect(mounted.find('.panel-body').first().find(RadioButton).length).to.eql(2);
+    expect(mounted.find('.panel-body').first().find(RadioButton).at(1).props().label).to.contain('Groups in Agriculture Department');
+    expect(mounted.find('.panel-body').first().find(RadioButton).at(1).find(Checkbox).props().label).to.contain('A list of people I\'ll type or paste in');
 
     mounted.setState({ department: { code: 'FU', name: 'Fun Department', faculty: 'Arts' } });
-    expect(mounted.find('.list-group').first().find(RadioButton).length).to.eql(2);
-    expect(mounted.find('.list-group').first().find(RadioButton).at(1).props().label).to.contain('Groups in Fun Department');
-    expect(mounted.find('.list-group').first().find(RadioButton).at(1).find(Checkbox)).to.have.length(5);
+    expect(mounted.find('.panel-body').first().find(RadioButton).length).to.eql(2);
+    expect(mounted.find('.panel-body').first().find(RadioButton).at(1).props().label).to.contain('Groups in Fun Department');
+    expect(mounted.find('.panel-body').first().find(RadioButton).at(1).find(Checkbox)).to.have.length(5);
   });
 
   it('displays undergraduate group subsets', () => {
@@ -266,13 +268,13 @@ describe('AudiencePicker', () => {
     };
 
     const mounted = enzyme.mount(<AudiencePicker {...props} />,  { context });
-    expect(mounted.find('.list-group').first(1).find(RadioButton).find({value: 'Dept:UndergradStudents:All'})).to.have.length(1);
-    expect(mounted.find('.list-group').first(1).find(RadioButton).find({value: 'year'})).to.have.length(1);
-    expect(mounted.find('.list-group').first(1).find(RadioButton).find({value: 'Dept:UndergradStudents:First'})).to.have.length(0);
+    expect(mounted.find('.panel-body').first(1).find(RadioButton).find({value: 'Dept:UndergradStudents:All'})).to.have.length(1);
+    expect(mounted.find('.panel-body').first(1).find(RadioButton).find({value: 'year'})).to.have.length(1);
+    expect(mounted.find('.panel-body').first(1).find(RadioButton).find({value: 'Dept:UndergradStudents:First'})).to.have.length(0);
 
     mounted.setState({ audience: { department: { groups: { undergraduates: { year: { 'Dept:UndergradStudents:First': undefined } } } } } });
 
-    expect(mounted.find('.list-group').first(1).find(RadioButton)
+    expect(mounted.find('.panel-body').first(1).find(RadioButton)
       .find({ value: 'Dept:UndergradStudents:First' })).to.have.length(1);
   })
 
