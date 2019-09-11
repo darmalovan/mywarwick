@@ -63,7 +63,7 @@ class NewsItem extends React.PureComponent {
           <div className="news-item__footer">
             <div className="news-item__link">{ moreLink }</div>
             <p>
-              {dateFormats.forNewsItem(publishDate, new Date(), { printToday: true})}
+              {dateFormats.forNewsItem(publishDate, new Date(), { printToday: true })}
             </p>
             <div className="news-item__category-tags">
               {categories.map(c => <NewsItemTag key={c.id} name={c.name} />)}
