@@ -54,7 +54,8 @@ export default class InfiniteScrollable extends HideableView {
     // detached - we've explicitly detached the listener
     // unmounted - the component is/has unmounted
     // suppressScroll - set while loading to avoid trying to load content twice
-    if (this.detached || this.unmounted || this.suppressScroll || this.state.loading || !this.props.hasMore) {
+    if (this.detached || this.unmounted || this.suppressScroll || this.state.loading
+      || !this.props.hasMore) {
       return;
     }
 
