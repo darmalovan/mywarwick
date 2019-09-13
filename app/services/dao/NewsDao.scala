@@ -83,12 +83,13 @@ class AnormNewsDao @Inject()(dialect: DatabaseDialect) extends NewsDao {
     newsCategoryId <- str("news_category_id").?
     newsCategoryName <- str("news_category_name").?
     newsCategoryIcon <- str("news_category_icon").?
+    newsCategorySortOrder <- str("news_category_sort_order").?
     publisherId <- str("publisher_id")
   } yield {
     val link = for (text <- linkText; href <- parseLink(linkHref)) yield Link(text, href)
     val category = for (id <- newsCategoryId; name <- newsCategoryName) yield NewsCategory(id, name, newsCategoryIcon)
 
-    NewsItemRender(id, title, text, link, publishDate, imageId, category.toSeq, ignoreCategories, publisherId)
+    NewsItemRender(id, title, text, link, publishDate, imageId, category.toSeq.sortBy(nc => nc.sortOrder), ignoreCategories, publisherId)
   }
 
   private val newsAuditParser = for {
@@ -109,7 +110,8 @@ class AnormNewsDao @Inject()(dialect: DatabaseDialect) extends NewsDao {
         n.*,
         NEWS_CATEGORY.ID AS NEWS_CATEGORY_ID,
         NEWS_CATEGORY.NAME AS NEWS_CATEGORY_NAME,
-        NEWS_CATEGORY.ICON AS NEWS_CATEGORY_ICON
+        NEWS_CATEGORY.ICON AS NEWS_CATEGORY_ICON,
+        NEWS_CATEGORY.SORT_ORDER AS NEWS_CATEGORY_SORT_ORDER
       FROM NEWS_ITEM n
         LEFT OUTER JOIN NEWS_ITEM_CATEGORY c
           ON c.NEWS_ITEM_ID = n.ID
@@ -216,7 +218,8 @@ class AnormNewsDao @Inject()(dialect: DatabaseDialect) extends NewsDao {
         n.*,
         NEWS_CATEGORY.ID AS NEWS_CATEGORY_ID,
         NEWS_CATEGORY.NAME AS NEWS_CATEGORY_NAME,
-        NEWS_CATEGORY.ICON AS NEWS_CATEGORY_ICON
+        NEWS_CATEGORY.ICON AS NEWS_CATEGORY_ICON,
+        NEWS_CATEGORY.SORT_ORDER AS NEWS_CATEGORY_SORT_ORDER,
       FROM NEWS_ITEM n
         LEFT OUTER JOIN NEWS_ITEM_CATEGORY c
           ON c.NEWS_ITEM_ID = n.ID
