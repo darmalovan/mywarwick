@@ -83,11 +83,11 @@ class AnormNewsDao @Inject()(dialect: DatabaseDialect) extends NewsDao {
     newsCategoryId <- str("news_category_id").?
     newsCategoryName <- str("news_category_name").?
     newsCategoryIcon <- str("news_category_icon").?
-    newsCategorySortOrder <- str("news_category_sort_order").?
+    newsCategorySortOrder <- int("news_category_sort_order").?
     publisherId <- str("publisher_id")
   } yield {
     val link = for (text <- linkText; href <- parseLink(linkHref)) yield Link(text, href)
-    val category = for (id <- newsCategoryId; name <- newsCategoryName) yield NewsCategory(id, name, newsCategoryIcon)
+    val category = for (id <- newsCategoryId; name <- newsCategoryName; sortOrder <- newsCategorySortOrder) yield NewsCategory(id, name, newsCategoryIcon, sortOrder)
 
     NewsItemRender(id, title, text, link, publishDate, imageId, category.toSeq.sortBy(nc => nc.sortOrder), ignoreCategories, publisherId)
   }
