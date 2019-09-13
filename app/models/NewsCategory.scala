@@ -6,5 +6,5 @@ object NewsCategory {
   implicit val format = Json.format[NewsCategory]
 }
 
-case class NewsCategory(id: String, name: String, icon: Option[String])
+case class NewsCategory(id: String, name: String, icon: Option[String], sortOrder: Int)
 
