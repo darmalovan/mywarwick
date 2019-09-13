@@ -39,7 +39,7 @@ class NewsCategoryDaoImpl extends NewsCategoryDao {
 
   override def saveNewsCategories(newsItemId: String, categoryIds: Seq[String])(implicit c: Connection) =
     categoryIds.foreach { categoryId =>
-      SQL"INSERT INTO NEWS_ITEM_CATEGORY (NEWS_ITEM_ID, NEWS_CATEGORY_ID, SORT_ORDER) VALUES ($newsItemId, $categoryId, 1)".execute()
+      SQL"INSERT INTO NEWS_ITEM_CATEGORY (NEWS_ITEM_ID, NEWS_CATEGORY_ID) VALUES ($newsItemId, $categoryId)".execute()
     }
 
   override def getNewsCategories(newsItemId: String)(implicit c: Connection): Seq[NewsCategory] =
