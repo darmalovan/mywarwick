@@ -21,9 +21,9 @@ class NewsCategoryDaoTest extends BaseSpec with OneStartAppPerSuite {
 
     "get all categories" in transaction { implicit c =>
       dao.all() mustBe Seq(
-        NewsCategory("category-a", "Category A", None),
-        NewsCategory("category-b", "Category B", None),
-        NewsCategory("category-c", "Category C", None)
+        NewsCategory("category-a", "Category A", None, 1),
+        NewsCategory("category-b", "Category B", None, 1),
+        NewsCategory("category-c", "Category C", None, 1)
       )
     }
 
@@ -35,8 +35,8 @@ class NewsCategoryDaoTest extends BaseSpec with OneStartAppPerSuite {
         .execute()
 
       dao.getNewsCategories("news-item") mustBe Seq(
-        NewsCategory("category-a", "Category A", None),
-        NewsCategory("category-b", "Category B", None)
+        NewsCategory("category-a", "Category A", None, 1),
+        NewsCategory("category-b", "Category B", None, 1)
       )
     }
 
