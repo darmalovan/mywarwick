@@ -18,6 +18,12 @@ To build assets, run `gulp assets`.
 To continually build assets when they change, run `gulp wizard`.
 To lint the JavaScript code, you can use `gulp lint`. You'll probably want to do this prior to a PR.
 
+To build assets in development mode, `gulpopts.json` should contain:
+
+```json
+{ "env": { "PRODUCTION": false } }
+```
+
 To start the app, run `./activator "run 8080"`. You can choose a different port but using 8080 might make it simpler
 to re-use your Apache/Nginx proxy config that you have working for Tomcat.
 
