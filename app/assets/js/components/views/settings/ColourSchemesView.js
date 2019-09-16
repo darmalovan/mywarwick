@@ -107,6 +107,17 @@ class ColourSchemesView extends HideableView {
     }
   }
 
+  latestIdSupported() {
+    if ("MyWarwickNative" in window) {
+      const mwn = window.MyWarwickNative;
+      if (typeof(mwn.latestBackgroundId) !== undefined) {
+        return mwn.latestBackgroundId;
+      }
+      return 5;
+    }
+    return 9999;
+  }
+
   render() {
     return (
       <div>
@@ -131,7 +142,7 @@ class ColourSchemesView extends HideableView {
         </div> }
 
         <div className="list-group">
-          {_.map(this.props.schemes, scheme => this.makeItem(scheme))}
+          {_.map(this.props.schemes.filter(s => s.id <= this.latestIdSupported()), scheme => this.makeItem(scheme))}
         </div>
       </div>
     );
