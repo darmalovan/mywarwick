@@ -193,6 +193,31 @@
   5
 );
 
+.transparent-theme-maker(
+  #135680,
+  linear-gradient(137deg, rgb(253, 155, 20) 0%, rgb(254, 167, 70) 88%, rgb(255, 167, 78) 100%),
+  linear-gradient(to right, #bf9a3d 0%, #b98b79 50%, #435977 100%),
+  '/assets/images/bg06.jpg',
+  6
+);
+
+.transparent-theme-maker(
+  #597B56,
+  linear-gradient(168deg, rgba(181,52,38,1) 0%, rgba(247,151,55,1) 100%),
+  linear-gradient(to right, #ac5b1b 0%, #b84 25%, #867d4a 50%, #637f58 75%, #588068 100%),
+  '/assets/images/bg07.jpg',
+  7
+);
+
+.transparent-theme-maker(
+  #383838,
+  linear-gradient(90deg, rgba(109,109,109,1) 0%, rgba(34,34,34,1) 100%),
+  #4f4f4f,
+  '/assets/images/bg08.jpg',
+  8
+);
+
+
 .behind-tiles(@rules) {
   html {
     background: transparent;
@@ -228,4 +253,8 @@
       background-color: @c3;
     }
   }
+}
+
+.theme-transparent-8 .id7-utility-bar .img-circle {
+  filter: saturate(0%);
 }
