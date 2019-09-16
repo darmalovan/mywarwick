@@ -25,10 +25,10 @@ const postToServer = _.debounce(getState => doPostToServer(getState().colourSche
 
 export function updateUi() {
   return (dispatch, getState) => {
-    const { chosenId, isHighContrast, schemes } = getState().colourSchemes;
-    const chosenScheme = _.find(schemes, scheme => scheme.id === chosenId);
+    const { chosen, isHighContrast, schemes } = getState().colourSchemes;
+    const chosenScheme = _.find(schemes, scheme => scheme.id === chosen);
     dispatch(theme.updateColourTheme({
-      colourTheme: `transparent-${chosenId}${isHighContrast ? '--high-contrast' : ''}`,
+      colourTheme: `transparent-${chosen}${isHighContrast ? '--high-contrast' : ''}`,
       schemeColour: chosenScheme.schemeColour,
     }));
   };
