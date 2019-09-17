@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import _ from 'lodash-es';
@@ -108,9 +110,9 @@ class ColourSchemesView extends HideableView {
   }
 
   latestIdSupported() {
-    if ("MyWarwickNative" in window) {
+    if ('MyWarwickNative' in window) {
       const mwn = window.MyWarwickNative;
-      if (typeof(mwn.latestBackgroundId) !== undefined) {
+      if (typeof mwn.latestBackgroundId !== 'undefined') {
         return mwn.latestBackgroundId;
       }
       return 5;
@@ -142,7 +144,9 @@ class ColourSchemesView extends HideableView {
         </div> }
 
         <div className="list-group">
-          {_.map(this.props.schemes.filter(s => s.id <= this.latestIdSupported()), scheme => this.makeItem(scheme))}
+          {_.map(this.props.schemes.filter(
+            s => s.id <= this.latestIdSupported(),
+          ), scheme => this.makeItem(scheme))}
         </div>
       </div>
     );
